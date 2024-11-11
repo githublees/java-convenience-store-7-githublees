@@ -3,6 +3,8 @@ package store.domain;
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import store.contant.Constant;
 import store.dto.BuyDTO;
 import store.dto.ProductsDTO;
@@ -67,6 +69,13 @@ public class Products {
                 }).toList();
     }
 
+    public List<String> getNames() {
+        return products.stream()
+                .map(Product::getName)
+                .distinct()
+                .toList();
+    }
+
     private void buy(
             String name, int quantity,
             Product with, Product without, List<PurchaseDTO> purchases, List<PurchaseDTO> frees
@@ -85,7 +94,8 @@ public class Products {
             Product withPromotion, StockDTO stockDTO
     ) {
         purchases.add(new PurchaseDTO(
-                name, withPromotion.getPrice(), stockDTO.getTotalStock(), stockDTO.freeStock(), stockDTO.remainStock()));
+                name, withPromotion.getPrice(), stockDTO.getTotalStock(), stockDTO.freeStock(),
+                stockDTO.remainStock()));
         frees.add(new PurchaseDTO(
                 name, withPromotion.getPrice(), stockDTO.freeStock(), 0, 0));
     }
@@ -158,14 +168,14 @@ public class Products {
         return remain > ZERO;
     }
 
-    private Product getItemWithPromotion(String name) {
+    public Product getItemWithPromotion(String name) {
         return products.stream()
                 .filter(product -> product.isSameName(name) && product.isWithPromotion())
                 .findFirst()
                 .orElse(null);
     }
 
-    private Product getItemWithoutPromotion(String name) {
+    public Product getItemWithoutPromotion(String name) {
         return products.stream()
                 .filter(product -> product.isSameName(name) && !product.isWithPromotion())
                 .findFirst()

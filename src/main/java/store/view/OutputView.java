@@ -11,14 +11,34 @@ public class OutputView {
 
     public static void printProducts(Products products) {
         System.out.println(OutputMessage.OUTPUT_HELLO_CONVENIENCE_MESSAGE);
-        for (Product product : products.getProducts()) {
-            String name = product.getName();
-            String price = getPrice(product);
-            String quantity = getQuantity(product);
-            String promotion = getPromotion(product);
-            System.out.println("- " + name + " " + price + " " + quantity + " " + promotion);
+        for (String product : products.getNames()) {
+            Product with = products.getItemWithPromotion(product);
+            Product without = products.getItemWithoutPromotion(product);
+
+            pritWith(with);
+            printWithout(without, with);
         }
         System.out.println();
+    }
+
+    private static void pritWith(Product with) {
+        if (with != null) {
+            String price = getPrice(with);
+            String quantity = getQuantity(with);
+            String promotion = getPromotion(with);
+            System.out.println("- " + with.getName() + " " + price + " " + quantity + " " + promotion);
+        }
+    }
+
+    private static void printWithout(Product without, Product with) {
+        if (without == null) {
+            String price = getPrice(with);
+            System.out.println("- " + with.getName() + " " + price + " 재고 없음");
+            return;
+        }
+        String price = getPrice(without);
+        String quantity = getQuantity(without);
+        System.out.println("- " + without.getName() + " " + price + " " + quantity);
     }
 
     public static void printReceipt(ReceiptDTO receiptDTO, boolean isMembership) {
