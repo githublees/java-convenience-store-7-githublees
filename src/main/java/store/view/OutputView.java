@@ -15,13 +15,13 @@ public class OutputView {
             Product with = products.getItemWithPromotion(product);
             Product without = products.getItemWithoutPromotion(product);
 
-            pritWith(with);
+            printWith(with);
             printWithout(without, with);
         }
         System.out.println();
     }
 
-    private static void pritWith(Product with) {
+    private static void printWith(Product with) {
         if (with != null) {
             String price = getPrice(with);
             String quantity = getQuantity(with);
