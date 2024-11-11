@@ -1,30 +1,83 @@
 package store.view;
 
 import camp.nextstep.edu.missionutils.Console;
+import java.util.List;
+import store.contant.Constant;
+import store.dto.BuyDTO;
+import store.exception.CustomException;
+import store.exception.ErrorMessage;
 
 public class InputView {
-    public String readItem() {
-        System.out.println("구매하실 상품명과 수량을 입력해 주세요. (예: [사이다-2],[감자칩-1])");
-        return Console.readLine();
+    public static List<BuyDTO> readItem() {
+        while (true) {
+            try {
+                System.out.println(InputMessage.INPUT_PURCHASE_PRODUCT_MESSAGE);
+                return InputHandler.splitItems(Console.readLine());
+            } catch (CustomException e) {
+                System.out.println(e.getErrorMessage());
+            }
+        }
     }
 
-    public String readMembership() {
-        System.out.println("멤버십 할인을 받으시겠습니까? (Y/N)");
-        return Console.readLine();
+    public static String readMembership() {
+        while (true) {
+            try {
+                System.out.println(InputMessage.INPUT_MEMBERSHIP_MESSAGE);
+                String input = Console.readLine();
+                validate(input);
+                return input;
+            } catch (CustomException e) {
+                System.out.println(e.getErrorMessage());
+            }
+        }
     }
 
-    public String readPromotion(String name, int quantity) {
-        System.out.printf("현재 %s %d개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n", name, quantity);
-        return Console.readLine();
+    public static String readPromotion(String name, int quantity) {
+        while (true) {
+            try {
+                System.out.printf(InputMessage.INPUT_PROMOTION_MESSAGE.format(name, quantity));
+                String input = Console.readLine();
+                validate(input);
+                return input;
+            } catch (CustomException e) {
+                System.out.println(e.getErrorMessage());
+            }
+        }
     }
 
-    public String readGetOneFree(String name, int quantity) {
-        System.out.printf("현재 %s은(는) %d개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n", name, quantity);
-        return Console.readLine();
+    public static String readGetOneFree(String name, int quantity) {
+        while (true) {
+            try {
+                System.out.printf(InputMessage.INPUT_GET_ONE_FREE_MESSAGE.format(name, quantity));
+                String input = Console.readLine();
+                validate(input);
+                return input;
+            } catch (CustomException e) {
+                System.out.println(e.getErrorMessage());
+            }
+        }
     }
 
-    public String readRePurchase() {
-        System.out.println("감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)");
-        return Console.readLine();
+    public static String readRePurchase() {
+        while (true) {
+            try {
+                System.out.println(InputMessage.INPUT_RE_PURCHASE_MESSAGE);
+                String input = Console.readLine();
+                validate(input);
+                return input;
+            } catch (CustomException e) {
+                System.out.println(e.getErrorMessage());
+            }
+        }
+    }
+
+    private static void validate(String input) {
+        if (isCorrectInput(input)) {
+            throw new CustomException(ErrorMessage.INVALID_INPUT_MESSAGE.toString());
+        }
+    }
+
+    private static boolean isCorrectInput(String input) {
+        return !(input.equals(Constant.Y.toString()) || input.equals(Constant.N.toString()));
     }
 }
