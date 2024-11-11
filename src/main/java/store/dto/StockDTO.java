@@ -1,7 +1,11 @@
 package store.dto;
 
 public record StockDTO(
-        String name,
-        int stock
+        int remainStock,
+        int applyStock,
+        int freeStock
 ) {
+    public int getTotalStock() {
+        return remainStock + applyStock + freeStock;
+    }
 }
