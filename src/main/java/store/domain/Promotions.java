@@ -1,16 +1,15 @@
 package store.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Promotions {
-    private final List<Promotion> promotions = new ArrayList<>();
+    private final List<Promotion> promotions;
 
-    public void addPromotion(Promotion promotion) {
-        promotions.add(promotion);
+    public Promotions(List<Promotion> promotions) {
+        this.promotions = promotions;
     }
 
-    public Promotion getPromotion(String name) {
+    public Promotion findPromotion(String name) {
         return promotions.stream()
                 .filter(promotion -> promotion.getName().equals(name))
                 .findFirst()
